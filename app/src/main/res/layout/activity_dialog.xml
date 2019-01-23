@@ -1,29 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_parent"
+    android:paddingStart="45dp"
+    android:paddingEnd="45dp"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp"
+    >
 
+    <android.support.v7.widget.CardView
+        android:id="@+id/relativeLayout_cardView_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:transitionName="transition"
 
-<android.support.v7.widget.CardView android:id="@+id/relativeLayout_cardView_content"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="50dp"
-    android:layout_marginEnd="50dp"
-    android:layout_marginTop="15dp"
-    android:transitionName="transition"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+        >
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="#fff"
             >
 
             <RelativeLayout
                 android:id="@+id/relativeLayout_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+
+                >
                 <ImageView
                     android:id="@+id/imageView_profile_pic"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/ic_baseline_stars_24px"
-                    android:layout_alignParentStart="true"
+                    android:layout_centerHorizontal="true"
                     android:transitionName="profileImageTransition"
 
                     />
@@ -34,8 +48,8 @@
                     android:layout_height="wrap_content"
                     android:text="Title"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-                    android:layout_toEndOf="@id/imageView_profile_pic"
-                    android:layout_centerVertical="true"
+                    android:layout_below="@id/imageView_profile_pic"
+                    android:gravity="center"
                     android:transitionName="titleTransition"
 
                     />
@@ -53,3 +67,4 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
+</RelativeLayout>

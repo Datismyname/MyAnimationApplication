@@ -1,34 +1,41 @@
 package com.hadilabs.myanimationapplication.fragment
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
+
+
+import android.app.Activity
+
+import android.content.Context
+import android.content.Intent
+
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
+
 import android.support.v4.app.Fragment
-import android.support.v4.view.animation.FastOutSlowInInterpolator
+import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
-import android.transition.TransitionManager
+import android.support.v7.widget.RecyclerView
+
+import android.support.v4.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
+
 import com.hadilabs.myanimationapplication.R
 import com.hadilabs.myanimationapplication.recyclerview.item.StoreItem
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.OnItemClickListener
-import com.xwray.groupie.Section
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+
 import kotlinx.android.synthetic.main.fragment_store.view.*
-import kotlinx.android.synthetic.main.item_store.*
+
+import android.widget.TextView
+import com.hadilabs.myanimationapplication.DialogActivity
 
 
-var isExpanded = false
+
 
 
 class StoreFragment : Fragment() {
 
-    private var storeCategorySection: Section? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -43,23 +50,25 @@ class StoreFragment : Fragment() {
         val item6 = StoreItem("Title 6" , "This is body number 6, we have to write some body text to make it as professional woke!")
         val item7 = StoreItem("Title 7" , "This is body number 7, we have to write some body text to make it as professional woke!")
         val item8 = StoreItem("Title 8" , "This is body number 8, we have to write some body text to make it as professional woke!")
+        val item9 = StoreItem("Title 9" , "This is body number 9, we have to write some body text to make it as professional woke!")
 
-        val items = mutableListOf(item1,item2,item3,item4,item5,item6,item7,item8)
+        val items = mutableListOf(item1,item2,item3,item4,item5,item6,item7,item8, item9)
 
+
+        val daysArray = arrayOfNulls<String>(items.size)
+        val datesArray = arrayOfNulls<String>(items.size)
+
+        for (i in 0 until daysArray.size) {
+            daysArray[i] = items[i].title
+            datesArray[i] = items[i].body
+        }
 
         view.recyclerView_fragment_store.apply {
 
             layoutManager = LinearLayoutManager( context )
 
-            adapter = GroupAdapter<ViewHolder>().apply {
+            adapter = RecyclerAdapter(daysArray, datesArray)
 
-                storeCategorySection = Section(items)
-
-                add(storeCategorySection!!)
-
-                setOnItemClickListener( onItemClick )
-
-            }
 
         }
 
@@ -68,77 +77,98 @@ class StoreFragment : Fragment() {
 
 
 
-    val onItemClick = OnItemClickListener{ item, view ->
-
-
-        if ( item is StoreItem ){
-
-
-            TransitionManager.beginDelayedTransition( relativeLayout_cardView_content )
-
-            val imageView_profile_pic_params = imageView_profile_pic.layoutParams as RelativeLayout.LayoutParams
-            val textView_title_params = textView_title.layoutParams as RelativeLayout.LayoutParams
-
-
-            relativeLayout_cardView_content.animate()
-                    .setDuration(200)
-                    .translationY(-1f)
-                    .setListener( MyAnimation(imageView_profile_pic, imageView_profile_pic_params, textView_title, textView_title_params, textView_body) )
-                    .interpolator = FastOutSlowInInterpolator()
-
-
-
-
-
-        }
-
-
-
-    }
-
 
 }
 
 
-class MyAnimation(val imageView: ImageView, val imageParams: RelativeLayout.LayoutParams, val textView: TextView, val textParams: RelativeLayout.LayoutParams, val bodyText: TextView) : AnimatorListenerAdapter() {
-
-    override fun onAnimationStart(animation: Animator?) {
-        super.onAnimationStart(animation)
-
-        if ( !isExpanded ) {
-            imageParams.addRule(RelativeLayout.CENTER_HORIZONTAL)
-            imageParams.addRule(RelativeLayout.ALIGN_PARENT_START, 0)
-
-            textParams.addRule(RelativeLayout.BELOW, R.id.imageView_profile_pic)
-            textParams.addRule(RelativeLayout.END_OF, 0)
-
-            imageView.layoutParams = imageParams
-            textView.layoutParams = textParams
-
-            bodyText.visibility = View.VISIBLE
-
-            isExpanded = true
-
-        }else{
-
-            imageParams.addRule(RelativeLayout.CENTER_HORIZONTAL,0)
-            imageParams.addRule(RelativeLayout.ALIGN_PARENT_START)
-
-            textParams.addRule(RelativeLayout.BELOW, 0)
-            textParams.addRule(RelativeLayout.END_OF, R.id.imageView_profile_pic)
-
-            imageView.layoutParams = imageParams
-            textView.layoutParams = textParams
-
-            bodyText.visibility = View.GONE
-
-            isExpanded = false
 
 
-        }
+class RecyclerAdapter( private var daysArray: Array<String?>, private var datesArray: Array<String?>) : RecyclerView.Adapter<RecyclerAdapter.MyCardViewHolder>() {
 
+
+    private var mContext: Context? = null
+    private var mDaysTxt: TextView? = null
+    private var mDateTxt: TextView? = null
+    private var mDateContainerLayout: CardView? = null
+
+
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyCardViewHolder {
+
+        mContext = parent.context
+
+        val layoutInflater: LayoutInflater? = LayoutInflater.from(mContext)
+
+        val view = layoutInflater!!.inflate(R.layout.item_store, parent, false)
+
+
+        return MyCardViewHolder(view)
+
+    }
+
+    override fun onBindViewHolder(holder: MyCardViewHolder, position: Int) {
+
+        mDaysTxt = holder.mDaysTxt
+        mDateTxt = holder.mDateTxt
+        mDateContainerLayout = holder.mDateContainerLayout
+
+        mDaysTxt!!.text = daysArray[position]
+        mDateTxt!!.text = datesArray[position]
+
+
+    }
+
+    override fun getItemCount(): Int {
+        return daysArray.size
     }
 
 
 
-}
+
+    inner class MyCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        var mDaysTxt: TextView? = null
+        var mDateTxt: TextView? = null
+        private var mImageView: ImageView? = null
+        var mDateContainerLayout: CardView? = null
+
+
+        init {
+            mDaysTxt = itemView.findViewById (R.id.textView_title) as TextView
+            mDateTxt = itemView.findViewById (R.id.textView_body) as TextView
+            mImageView = itemView.findViewById( R.id.imageView_profile_pic ) as ImageView
+            mDateContainerLayout = itemView.findViewById (R.id.relativeLayout_cardView_content) as CardView
+
+
+            mDateContainerLayout!!.setOnClickListener {
+
+
+                val i =  Intent( Intent( mContext, DialogActivity::class.java ) )
+
+                val imagePath = R.drawable.ic_baseline_stars_24px
+
+                i.putExtra("imagePath", imagePath)
+                i.putExtra("title", mDaysTxt!!.text)
+                i.putExtra("body", mDateTxt!!.text)
+
+
+                val pairs = ArrayList< Pair<View, String> >()
+
+                pairs.add( Pair( mImageView!!, "profileImageTransition" ) )
+                pairs.add( Pair( mDaysTxt!!, "titleTransition" ) )
+                pairs.add( Pair( mDateTxt!!, "bodyTransition" ) )
+                pairs.add( Pair( itemView , "transition" ) )
+
+                val pairsArray:Array< Pair<View, String> > = pairs.toTypedArray()
+
+                val options: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation( (mContext as Activity), *pairsArray)
+                    (mContext as Activity).startActivity(i, options.toBundle())
+
+
+
+            }
+        }
+    }
+
+    }

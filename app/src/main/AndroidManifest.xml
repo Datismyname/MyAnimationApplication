@@ -19,7 +19,10 @@
         <activity
             android:name=".StoreActivity"
             android:label="@string/title_activity_store"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".DialogActivity"
+            android:theme="@style/AppTheme.Transparent"></activity>
     </application>
 
 </manifest>
