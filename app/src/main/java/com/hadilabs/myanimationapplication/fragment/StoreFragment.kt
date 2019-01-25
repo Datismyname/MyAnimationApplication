@@ -28,13 +28,23 @@ import kotlinx.android.synthetic.main.fragment_store.view.*
 
 import android.widget.TextView
 import com.hadilabs.myanimationapplication.DialogActivity
-
-
-
+import java.io.Serializable
 
 
 class StoreFragment : Fragment() {
 
+    var realIems:ArrayList<StoreItem>? = null
+    var s : String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+        arguments.let {
+            s = it!!.getString("s")
+            realIems = it!!.getSerializable("items")  as ArrayList<StoreItem>
+        }
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -55,12 +65,13 @@ class StoreFragment : Fragment() {
         val items = mutableListOf(item1,item2,item3,item4,item5,item6,item7,item8, item9)
 
 
+
         val daysArray = arrayOfNulls<String>(items.size)
         val datesArray = arrayOfNulls<String>(items.size)
 
         for (i in 0 until daysArray.size) {
-            daysArray[i] = items[i].title
-            datesArray[i] = items[i].body
+            daysArray[i] = realIems!![i].title
+            datesArray[i] = realIems!![i].body
         }
 
         view.recyclerView_fragment_store.apply {
@@ -76,7 +87,17 @@ class StoreFragment : Fragment() {
     }
 
 
+    companion object {
 
+        @JvmStatic
+        fun newInstance(param1: String, param2: Serializable) =
+                StoreFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("s", param1)
+                        putSerializable("items", param2)
+                    }
+                }
+    }
 
 }
 
