@@ -33,7 +33,7 @@
            android:layout_margin="5dp"
            android:layout_centerHorizontal="true"
            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
-           android:text="Title"/>
+           android:text="Mobile Phones"/>
        </RelativeLayout>
    </android.support.v7.widget.CardView>
 

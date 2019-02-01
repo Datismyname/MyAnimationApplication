@@ -1,5 +1,6 @@
 package com.hadilabs.myanimationapplication
 
+import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 
@@ -14,13 +15,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import com.hadilabs.myanimationapplication.fragment.BlankFragment
 import com.hadilabs.myanimationapplication.fragment.StoreFragment
 import com.hadilabs.myanimationapplication.recyclerview.item.StoreItem
 
 import kotlinx.android.synthetic.main.activity_store.*
 import java.io.Serializable
 
-class StoreActivity : AppCompatActivity() {
+class StoreActivity : AppCompatActivity() , BlankFragment.OnFragmentInteractionListener {
+    override fun onFragmentInteraction(uri: Uri) {
+
+    }
 
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
@@ -35,7 +40,6 @@ class StoreActivity : AppCompatActivity() {
 
         //mSectionsPagerAdapter!!.feedsList = StoreFragment()
 
-        val args = Bundle()
         val item1 = StoreItem("Title 1" , "This is body number 1, we have to write some body text to make it as professional woke!")
         val item2 = StoreItem("Title 2" , "This is body number 2, we have to write some body text to make it as professional woke!")
         val item3 = StoreItem("Title 3" , "This is body number 3, we have to write some body text to make it as professional woke!")
@@ -48,22 +52,34 @@ class StoreActivity : AppCompatActivity() {
 
         val items = arrayListOf(item1,item2,item3,item4,item5,item6,item7,item8, item9)
 
-        args.putString("s", "s")
-        args.putSerializable("items", items as Serializable)
+
         val newFragment = StoreFragment()
+        val args = Bundle()
+        args.putString("s", "Mobile Phones")
+        args.putSerializable("items", items as Serializable)
         newFragment.arguments = args
 
-        Log.e("animaa", "feedlist: " + newFragment.arguments!!.getSerializable("items") + "\n string " + newFragment.arguments!!.getSerializable("s"))
+        val newFragment2 = StoreFragment()
+        val args2 = Bundle()
+        args2.putString("s", "Chargers")
+        args2.putSerializable("items", items as Serializable)
+        newFragment2.arguments = args2
 
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager,StoreFragment())
-
-        //mSectionsPagerAdapter!!.feedsList=  newFragment
+//        Log.e("animaa", "feedlist: " + newFragment.arguments!!.getSerializable("items") + "\n string " + newFragment.arguments!!.getSerializable("s"))
 
 
-        Log.e("animaa", "feedlist: " + mSectionsPagerAdapter!!.feedsList!!.realIems + "\n string " + mSectionsPagerAdapter!!.feedsList!!.s)
+        val feedsList =  listOf( newFragment, newFragment2 )
+        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager , feedsList )
+
+/*
+        mSectionsPagerAdapter!!.feedsList=  listOf( newFragment )
+*/
+
+
+        //Log.e("animaa", "feedlist: " + mSectionsPagerAdapter!!.feedsList!!.realIems + "\n string " + mSectionsPagerAdapter!!.feedsList!!.s)
 
        // mSectionsPagerAdapter!!.notifyDataSetChanged()
-        Log.e("animaa", "feedlist 2: " + mSectionsPagerAdapter!!.feedsList!!.realIems + "\n string " + mSectionsPagerAdapter!!.feedsList!!.s)
+       // Log.e("animaa", "feedlist 2: " + mSectionsPagerAdapter!!.feedsList!!.realIems + "\n string " + mSectionsPagerAdapter!!.feedsList!!.s)
         // Set up the ViewPager with the sections adapter.
         container.adapter = mSectionsPagerAdapter
 
@@ -93,19 +109,19 @@ class StoreActivity : AppCompatActivity() {
 
 
 
-    inner class SectionsPagerAdapter(fm: FragmentManager, var feedsList: StoreFragment) : FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter(fm: FragmentManager ,val feedsList: List<Fragment>) : FragmentPagerAdapter(fm) {
 
 
         override fun getItem(position: Int): Fragment {
 
-            Log.e("animaa", "feedlist: " + feedsList!!.realIems + " string: " + feedsList!!.s )
+            //Log.e("animaa", "feedlist: " + feedsList!!.realIems + " string: " + feedsList!!.s )
 
-            return StoreFragment()  /*StoreFragment()*/
+            return feedsList[position]  /*StoreFragment()*/
         }
 
         override fun getCount(): Int {
             // Show 3 total pages.
-            return 3
+            return feedsList.size
         }
     }
 

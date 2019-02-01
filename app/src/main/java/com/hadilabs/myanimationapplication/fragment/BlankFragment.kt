@@ -1,13 +1,15 @@
-package com.hadilabs.myanimationapplication
+package com.hadilabs.myanimationapplication.fragment
 
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+
+import com.hadilabs.myanimationapplication.R
 import java.io.Serializable
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,14 +37,18 @@ class BlankFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getSerializable(ARG_PARAM2)
+            Log.e("animaa", "  arguments?.let String: $param1 , ${it.getString(ARG_PARAM1)} h , $ARG_PARAM1"  )
         }
+        Log.e("animaa", "  arguments?.let String: $param1 , , $ARG_PARAM1"  )
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return TextView(activity).apply {
-            setText(R.string.hello_blank_fragment)
-        }
+        Log.e("animaa", "String: $param1"  )
+        Log.e("animaa", "feedlist: $param2")
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_blank, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event

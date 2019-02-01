@@ -16,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 
 import android.support.v4.util.Pair
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,15 +35,15 @@ import java.io.Serializable
 class StoreFragment : Fragment() {
 
     var realIems:ArrayList<StoreItem>? = null
-    var s : String? = null
+    var headTitle : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        arguments.let {
-            s = it!!.getString("s")
-            realIems = it!!.getSerializable("items")  as ArrayList<StoreItem>
+        arguments?.let {
+            headTitle = it.getString("s")
+            realIems = it.getSerializable("items")  as ArrayList<StoreItem>
         }
     }
 
@@ -64,7 +65,7 @@ class StoreFragment : Fragment() {
 
         val items = mutableListOf(item1,item2,item3,item4,item5,item6,item7,item8, item9)
 
-
+        Log.e("animaa", "string: $headTitle" )
 
         val daysArray = arrayOfNulls<String>(items.size)
         val datesArray = arrayOfNulls<String>(items.size)
@@ -73,6 +74,8 @@ class StoreFragment : Fragment() {
             daysArray[i] = realIems!![i].title
             datesArray[i] = realIems!![i].body
         }
+
+        view.textView_category_title.text = headTitle
 
         view.recyclerView_fragment_store.apply {
 
