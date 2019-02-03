@@ -1,31 +1,23 @@
 package com.hadilabs.myanimationapplication
 
 import android.net.Uri
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import com.hadilabs.myanimationapplication.fragment.BlankFragment
 import com.hadilabs.myanimationapplication.fragment.StoreFragment
+import com.hadilabs.myanimationapplication.model.Category
 import com.hadilabs.myanimationapplication.recyclerview.item.StoreItem
+import com.rahmadarifan.library.custombottomsheetbehavior.BottomSheetUtils
 
 import kotlinx.android.synthetic.main.activity_store.*
 import java.io.Serializable
 
-class StoreActivity : AppCompatActivity() , BlankFragment.OnFragmentInteractionListener {
-    override fun onFragmentInteraction(uri: Uri) {
-
-    }
+class StoreActivity : AppCompatActivity()  {
 
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
@@ -34,11 +26,10 @@ class StoreActivity : AppCompatActivity() , BlankFragment.OnFragmentInteractionL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_store)
 
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        //mSectionsPagerAdapter!!.feedsList = StoreFragment()
 
         val item1 = StoreItem("Title 1" , "This is body number 1, we have to write some body text to make it as professional woke!")
         val item2 = StoreItem("Title 2" , "This is body number 2, we have to write some body text to make it as professional woke!")
@@ -53,74 +44,52 @@ class StoreActivity : AppCompatActivity() , BlankFragment.OnFragmentInteractionL
         val items = arrayListOf(item1,item2,item3,item4,item5,item6,item7,item8, item9)
 
 
-        val newFragment = StoreFragment()
-        val args = Bundle()
-        args.putString("s", "Mobile Phones")
-        args.putSerializable("items", items as Serializable)
-        newFragment.arguments = args
+        val categories: ArrayList<Category> = arrayListOf()
+        val fragments: ArrayList<StoreFragment> = arrayListOf()
+        val arguments: ArrayList<Bundle> = arrayListOf()
 
-        val newFragment2 = StoreFragment()
-        val args2 = Bundle()
-        args2.putString("s", "Chargers")
-        args2.putSerializable("items", items as Serializable)
-        newFragment2.arguments = args2
+        categories.add( Category( "Mobile Phones", items )  )
+        categories.add( Category( "Chargers", items )  )
 
-//        Log.e("animaa", "feedlist: " + newFragment.arguments!!.getSerializable("items") + "\n string " + newFragment.arguments!!.getSerializable("s"))
+        var i = 0
+        for ( category in categories ){
+
+            fragments.add( i,  StoreFragment() )
+            arguments.add( i, Bundle() )
+
+            arguments[i].putString( "categoryTitle" , category.title )
+            arguments[i].putSerializable("categoryItems", category.items as Serializable)
+
+            fragments[i].arguments = arguments[i]
+
+            i += 1
+        }
 
 
-        val feedsList =  listOf( newFragment, newFragment2 )
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager , feedsList )
+        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager , fragments )
 
-/*
-        mSectionsPagerAdapter!!.feedsList=  listOf( newFragment )
-*/
-
-
-        //Log.e("animaa", "feedlist: " + mSectionsPagerAdapter!!.feedsList!!.realIems + "\n string " + mSectionsPagerAdapter!!.feedsList!!.s)
-
-       // mSectionsPagerAdapter!!.notifyDataSetChanged()
-       // Log.e("animaa", "feedlist 2: " + mSectionsPagerAdapter!!.feedsList!!.realIems + "\n string " + mSectionsPagerAdapter!!.feedsList!!.s)
         // Set up the ViewPager with the sections adapter.
         container.adapter = mSectionsPagerAdapter
 
+        BottomSheetUtils.setupViewPager(container)
 
 
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_store, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-
-        if (id == R.id.action_settings) {
-            return true
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
 
 
 
-    inner class SectionsPagerAdapter(fm: FragmentManager ,val feedsList: List<Fragment>) : FragmentPagerAdapter(fm) {
+
+    inner class SectionsPagerAdapter(fm: FragmentManager, private val feedsList: List<Fragment>) : FragmentPagerAdapter(fm) {
 
 
         override fun getItem(position: Int): Fragment {
 
-            //Log.e("animaa", "feedlist: " + feedsList!!.realIems + " string: " + feedsList!!.s )
-
-            return feedsList[position]  /*StoreFragment()*/
+            return feedsList[position]
         }
 
         override fun getCount(): Int {
-            // Show 3 total pages.
             return feedsList.size
         }
     }
@@ -128,13 +97,7 @@ class StoreActivity : AppCompatActivity() , BlankFragment.OnFragmentInteractionL
 
 }
 
- class ItemsArrays(val _myArray:ArrayList<ArrayList<String>>) : Serializable {
 
-    companion object {
-        const val serialVersionUID = java.security.Key.serialVersionUID
-    }
-
-}
 
 
 

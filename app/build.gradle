@@ -45,4 +45,7 @@ dependencies {
     implementation 'com.xwray:groupie:2.0.3'
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.0.3'
 
+    //CustomBottomSheetBehavior
+    implementation 'com.github.rahmadarifan:CustomBottomSheetBehavior:v0.0.1'
+
 }

@@ -42,8 +42,8 @@ class StoreFragment : Fragment() {
 
 
         arguments?.let {
-            headTitle = it.getString("s")
-            realIems = it.getSerializable("items")  as ArrayList<StoreItem>
+            headTitle = it.getString("categoryTitle")
+            realIems = it.getSerializable("categoryItems")  as ArrayList<StoreItem>
         }
     }
 
@@ -53,22 +53,10 @@ class StoreFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_store, container, false)
 
-        val item1 = StoreItem("Title 1" , "This is body number 1, we have to write some body text to make it as professional woke!")
-        val item2 = StoreItem("Title 2" , "This is body number 2, we have to write some body text to make it as professional woke!")
-        val item3 = StoreItem("Title 3" , "This is body number 3, we have to write some body text to make it as professional woke!")
-        val item4 = StoreItem("Title 4" , "This is body number 4, we have to write some body text to make it as professional woke!")
-        val item5 = StoreItem("Title 5" , "This is body number 5, we have to write some body text to make it as professional woke!")
-        val item6 = StoreItem("Title 6" , "This is body number 6, we have to write some body text to make it as professional woke!")
-        val item7 = StoreItem("Title 7" , "This is body number 7, we have to write some body text to make it as professional woke!")
-        val item8 = StoreItem("Title 8" , "This is body number 8, we have to write some body text to make it as professional woke!")
-        val item9 = StoreItem("Title 9" , "This is body number 9, we have to write some body text to make it as professional woke!")
 
-        val items = mutableListOf(item1,item2,item3,item4,item5,item6,item7,item8, item9)
 
-        Log.e("animaa", "string: $headTitle" )
-
-        val daysArray = arrayOfNulls<String>(items.size)
-        val datesArray = arrayOfNulls<String>(items.size)
+        val daysArray = arrayOfNulls<String>(realIems!!.size)
+        val datesArray = arrayOfNulls<String>(realIems!!.size)
 
         for (i in 0 until daysArray.size) {
             daysArray[i] = realIems!![i].title
@@ -90,17 +78,7 @@ class StoreFragment : Fragment() {
     }
 
 
-    companion object {
 
-        @JvmStatic
-        fun newInstance(param1: String, param2: Serializable) =
-                StoreFragment().apply {
-                    arguments = Bundle().apply {
-                        putString("s", param1)
-                        putSerializable("items", param2)
-                    }
-                }
-    }
 
 }
 
@@ -187,7 +165,8 @@ class RecyclerAdapter( private var daysArray: Array<String?>, private var datesA
                 val pairsArray:Array< Pair<View, String> > = pairs.toTypedArray()
 
                 val options: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation( (mContext as Activity), *pairsArray)
-                    (mContext as Activity).startActivity(i, options.toBundle())
+
+                (mContext as Activity).startActivity(i, options.toBundle())
 
 
 

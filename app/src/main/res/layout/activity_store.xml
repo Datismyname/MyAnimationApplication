@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
+
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -21,20 +22,58 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_scrollFlags="enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name">
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="320dp"
+        android:gravity="center_horizontal"
+        android:text="backgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackground" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center_horizontal"
+        android:text="backgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackground" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center_horizontal"
+        android:text="backgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackground" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="32dp"
+
+        android:text="backgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackground" />
+    <LinearLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#EEE"
+        android:orientation="vertical"
+        app:behavior_anchorOffset="300dp"
+        app:behavior_defaultState="collapsed"
+        app:behavior_peekHeight="40dp"
+        app:layout_behavior="com.rahmadarifan.library.custombottomsheetbehavior.CustomBottomSheetBehavior">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+         />
+    </LinearLayout>
 
-
-
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>
