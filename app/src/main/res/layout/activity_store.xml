@@ -29,37 +29,24 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
-    <TextView
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="320dp"
-        android:gravity="center_horizontal"
-        android:text="backgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackground" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center_horizontal"
-        android:text="backgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackground" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center_horizontal"
-        android:text="backgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackground" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="background" />
 
-        android:text="backgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackgroundbackground" />
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#EEE"
         android:orientation="vertical"
-        app:behavior_anchorOffset="300dp"
+
         app:behavior_defaultState="collapsed"
         app:behavior_peekHeight="40dp"
         app:layout_behavior="com.rahmadarifan.library.custombottomsheetbehavior.CustomBottomSheetBehavior">
@@ -68,8 +55,14 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:clipToPadding="false"
+        android:paddingBottom="30dp"
+        android:paddingEnd="60dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:paddingStart="60dp"
+         />
     </LinearLayout>
 
-
+    </android.support.design.widget.CoordinatorLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -7,20 +7,31 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.view.Menu
 import android.view.MenuItem
 import com.hadilabs.myanimationapplication.fragment.StoreFragment
 import com.hadilabs.myanimationapplication.model.Category
 import com.hadilabs.myanimationapplication.recyclerview.item.StoreItem
 import com.rahmadarifan.library.custombottomsheetbehavior.BottomSheetUtils
+import com.rahmadarifan.library.custombottomsheetbehavior.CustomBottomSheetBehavior
 
 import kotlinx.android.synthetic.main.activity_store.*
 import java.io.Serializable
+import android.support.annotation.NonNull
+import android.support.v7.widget.CardView
+import android.view.View
+import kotlinx.android.synthetic.main.fragment_store.*
+import android.view.ViewGroup
+
+
+
 
 class StoreActivity : AppCompatActivity()  {
 
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private var mFragmentCardShadowTransformer: ShadowTransformer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,12 +55,13 @@ class StoreActivity : AppCompatActivity()  {
         val items = arrayListOf(item1,item2,item3,item4,item5,item6,item7,item8, item9)
 
 
-        val categories: ArrayList<Category> = arrayListOf()
-        val fragments: ArrayList<StoreFragment> = arrayListOf()
+        val categories: MutableList<Category> = arrayListOf()
+        val fragments: MutableList<StoreFragment> = arrayListOf()
         val arguments: ArrayList<Bundle> = arrayListOf()
 
         categories.add( Category( "Mobile Phones", items )  )
         categories.add( Category( "Chargers", items )  )
+        categories.add( Category( "Power Banks", items )  )
 
         var i = 0
         for ( category in categories ){
@@ -71,8 +83,33 @@ class StoreActivity : AppCompatActivity()  {
         // Set up the ViewPager with the sections adapter.
         container.adapter = mSectionsPagerAdapter
 
+
+        mFragmentCardShadowTransformer = ShadowTransformer(container, mSectionsPagerAdapter!!)
+
+        container.setPageTransformer( false, mFragmentCardShadowTransformer )
+
         BottomSheetUtils.setupViewPager(container)
 
+        CustomBottomSheetBehavior.from( bottom_sheet ).addBottomSheetCallback(object : CustomBottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+                // React to state change
+
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    //STATE_COLLAPSED
+                    textView_expanding.text = "للصيانة إسحب للأسفل"
+                } else {
+                    //STATE_EXPANDED;
+                    textView_expanding.text = "للمشتريات إسحب للأعلى"
+
+                }
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                // React to dragging events
+            }
+        })
 
     }
 
@@ -81,7 +118,15 @@ class StoreActivity : AppCompatActivity()  {
 
 
 
-    inner class SectionsPagerAdapter(fm: FragmentManager, private val feedsList: List<Fragment>) : FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter(fm: FragmentManager, private val feedsList: MutableList<StoreFragment>) : FragmentPagerAdapter(fm), CardAdapter  {
+
+
+        override val baseElevation: Float
+            get() = 3f
+
+        override fun getCardViewAt(position: Int): CardView {
+            return feedsList.get(position).cardView_category_header
+        }
 
 
         override fun getItem(position: Int): Fragment {
@@ -92,6 +137,19 @@ class StoreActivity : AppCompatActivity()  {
         override fun getCount(): Int {
             return feedsList.size
         }
+
+
+        /*override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val fragment = super.instantiateItem(container, position)
+            feedsList.add(position , fragment as StoreFragment)
+            return fragment
+        }
+
+        fun addCardFragment(fragment: StoreFragment) {
+            feedsList.add(fragment)
+        }*/
+
+
     }
 
 
