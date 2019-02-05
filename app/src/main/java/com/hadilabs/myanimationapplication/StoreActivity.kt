@@ -20,11 +20,11 @@ import kotlinx.android.synthetic.main.activity_store.*
 import java.io.Serializable
 import android.support.annotation.NonNull
 import android.support.v7.widget.CardView
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import kotlinx.android.synthetic.main.fragment_store.*
 import android.view.ViewGroup
-
-
+import kotlinx.android.synthetic.main.item_store.*
 
 
 class StoreActivity : AppCompatActivity()  {
@@ -84,32 +84,38 @@ class StoreActivity : AppCompatActivity()  {
         container.adapter = mSectionsPagerAdapter
 
 
+        // elevating currant fragment cards
         mFragmentCardShadowTransformer = ShadowTransformer(container, mSectionsPagerAdapter!!)
 
         container.setPageTransformer( false, mFragmentCardShadowTransformer )
 
+
         BottomSheetUtils.setupViewPager(container)
 
-        CustomBottomSheetBehavior.from( bottom_sheet ).addBottomSheetCallback(object : CustomBottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
+        CustomBottomSheetBehavior.from( bottom_sheet ).addBottomSheetCallback(
+                object : CustomBottomSheetBehavior.BottomSheetCallback() {
 
-                // React to state change
+                    override fun onStateChanged(bottomSheet: View, newState: Int) {
 
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    //STATE_COLLAPSED
-                    textView_expanding.text = "للصيانة إسحب للأسفل"
-                } else {
-                    //STATE_EXPANDED;
-                    textView_expanding.text = "للمشتريات إسحب للأعلى"
+                        // React to state change
+
+                        if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                            //STATE_COLLAPSED
+                            textView_expanding.text = "للصيانة إسحب للأسفل"
+                        } else {
+                            //STATE_EXPANDED;
+                            textView_expanding.text = "للمشتريات إسحب للأعلى"
+
+                        }
+
+                    }
+
+                    override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                        // React to dragging events
+                    }
 
                 }
-
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // React to dragging events
-            }
-        })
+        )
 
     }
 
@@ -124,8 +130,13 @@ class StoreActivity : AppCompatActivity()  {
         override val baseElevation: Float
             get() = 3f
 
-        override fun getCardViewAt(position: Int): CardView {
+
+        override fun getTitleCardViewAt(position: Int): CardView {
             return feedsList.get(position).cardView_category_header
+        }
+
+        override fun getCardViewAt(position: Int): RecyclerView {
+            return feedsList.get(position).recyclerView_fragment_store
         }
 
 

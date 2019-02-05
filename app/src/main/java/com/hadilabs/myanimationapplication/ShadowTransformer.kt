@@ -1,5 +1,6 @@
 package com.hadilabs.myanimationapplication
 
+import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.CardView
 import android.view.View
@@ -16,17 +17,27 @@ class ShadowTransformer(private val mViewPager: ViewPager, private val mAdapter:
     fun enableScaling(enable: Boolean) {
         if (mScalingEnabled && !enable) {
             // shrink main card
+            val currentTitleCard = mAdapter.getTitleCardViewAt( mViewPager.currentItem )
             val currentCard = mAdapter.getCardViewAt(mViewPager.currentItem)
             if (currentCard != null) {
                 currentCard.animate().scaleY(1f)
                 currentCard.animate().scaleX(1f)
             }
+            if (currentTitleCard != null) {
+                currentTitleCard.animate().scaleY(1f)
+                currentTitleCard.animate().scaleX(1f)
+            }
         } else if (!mScalingEnabled && enable) {
             // grow main card
+            val currentTitleCard = mAdapter.getTitleCardViewAt( mViewPager.currentItem )
             val currentCard = mAdapter.getCardViewAt(mViewPager.currentItem)
             if (currentCard != null) {
                 currentCard.animate().scaleY(1.1f)
                 currentCard.animate().scaleX(1.1f)
+            }
+            if (currentTitleCard != null) {
+                currentTitleCard.animate().scaleY(1.1f)
+                currentTitleCard.animate().scaleX(1.1f)
             }
         }
 
@@ -61,6 +72,8 @@ class ShadowTransformer(private val mViewPager: ViewPager, private val mAdapter:
             return
         }
 
+
+        val currentTitleCard = mAdapter.getTitleCardViewAt( realCurrentPosition )
         val currentCard = mAdapter.getCardViewAt(realCurrentPosition)
 
         // This might be null if a fragment is being used
@@ -70,9 +83,20 @@ class ShadowTransformer(private val mViewPager: ViewPager, private val mAdapter:
                 currentCard.scaleX = (1 + 0.1 * (1 - realOffset)).toFloat()
                 currentCard.scaleY = (1 + 0.1 * (1 - realOffset)).toFloat()
             }
-            currentCard.cardElevation = baseElevation + (baseElevation * (CardAdapter.MAX_ELEVATION_FACTOR - 1) * (1 - realOffset))
+            ViewCompat.setElevation( currentCard, baseElevation + (baseElevation * (CardAdapter.MAX_ELEVATION_FACTOR - 1) * (1 - realOffset)) )
+
         }
 
+        if (currentTitleCard != null) {
+            if (mScalingEnabled) {
+                currentTitleCard.scaleX = (1 + 0.1 * (1 - realOffset)).toFloat()
+                currentTitleCard.scaleY = (1 + 0.1 * (1 - realOffset)).toFloat()
+            }
+            currentTitleCard.cardElevation = baseElevation + (baseElevation * (CardAdapter.MAX_ELEVATION_FACTOR - 1) * (1 - realOffset))
+        }
+
+
+        val nextTitleCard = mAdapter.getTitleCardViewAt( nextPosition )
         val nextCard = mAdapter.getCardViewAt(nextPosition)
 
         // We might be scrolling fast enough so that the next (or previous) card
@@ -82,7 +106,16 @@ class ShadowTransformer(private val mViewPager: ViewPager, private val mAdapter:
                 nextCard.scaleX = (1 + 0.1 * realOffset).toFloat()
                 nextCard.scaleY = (1 + 0.1 * realOffset).toFloat()
             }
-            nextCard.cardElevation = baseElevation + (baseElevation * (CardAdapter.MAX_ELEVATION_FACTOR - 1) * realOffset)
+            ViewCompat.setElevation(nextCard , baseElevation + (baseElevation * (CardAdapter.MAX_ELEVATION_FACTOR - 1) * realOffset))
+
+        }
+
+        if (nextTitleCard != null) {
+            if (mScalingEnabled) {
+                nextTitleCard.scaleX = (1 + 0.1 * realOffset).toFloat()
+                nextTitleCard.scaleY = (1 + 0.1 * realOffset).toFloat()
+            }
+            nextTitleCard.cardElevation = baseElevation + (baseElevation * (CardAdapter.MAX_ELEVATION_FACTOR - 1) * realOffset)
         }
 
         mLastOffset = positionOffset

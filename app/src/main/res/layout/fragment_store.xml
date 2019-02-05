@@ -49,6 +49,7 @@
         android:id="@+id/recyclerView_fragment_store"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#eee"
         android:layout_below="@id/cardView_category_header">
 
     </android.support.v7.widget.RecyclerView>

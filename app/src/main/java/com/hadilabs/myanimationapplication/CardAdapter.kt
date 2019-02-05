@@ -2,6 +2,7 @@ package com.hadilabs.myanimationapplication
 
 
 import android.support.v7.widget.CardView
+import android.support.v7.widget.RecyclerView
 
 interface CardAdapter {
 
@@ -9,7 +10,10 @@ interface CardAdapter {
 
     fun getCount(): Int
 
-    fun getCardViewAt(position: Int): CardView
+
+    fun getTitleCardViewAt(position: Int): CardView
+
+    fun getCardViewAt(position: Int): RecyclerView
 
     companion object {
 
